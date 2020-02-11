@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get location"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="101dp" />
+
+    <TextView
+        android:id="@+id/tv01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="经度："
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="173dp" />
+
+    <TextView
+        android:id="@+id/tv02"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="纬度："
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="215dp" />
+
+</LinearLayout>
