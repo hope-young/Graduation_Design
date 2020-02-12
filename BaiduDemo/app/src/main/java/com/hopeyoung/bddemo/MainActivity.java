@@ -5,6 +5,9 @@ import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ZoomControls;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +21,14 @@ public class MainActivity extends AppCompatActivity {
         SDKInitializer.setCoordType(CoordType.BD09LL);
         setContentView(R.layout.activity_main);
 
+        //MapView.removeViewAt(1);
+
         baiduMapView = (MapView)findViewById(R.id.bmapView);
+
+        View Child = baiduMapView.getChildAt(1);
+        if(Child != null && (Child instanceof ImageView || Child instanceof ZoomControls)){
+            Child.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
