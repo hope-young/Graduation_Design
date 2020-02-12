@@ -7,7 +7,7 @@
 ### 下载新分支与数据  
 > git fetch origin  
 ### 提取数据并合并到当前分支  
-> get merge origin/master  
+> git merge origin/master  
 
 ## 推送到远程仓库  
 > git add [这是文件或文件夹]  
