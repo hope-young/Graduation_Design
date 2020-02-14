@@ -2,7 +2,12 @@ package com.hopeyoung.bdlocating;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.baidu.location.BDLocation;
+
+
 import android.os.Bundle;
+
+public LocationClient mLocationClient = null;
 
 public class MainActivity extends AppCompatActivity {
 
