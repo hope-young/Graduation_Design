@@ -11,13 +11,17 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Button button_record;
+    private Button button_map;
+    private Button button_time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //导入百度地图（调用Maps_Layout）
-        Button button_map = (Button)findViewById(R.id.button_map);
+        button_map = (Button)findViewById(R.id.button_map);
+
         button_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,11 +32,22 @@ public class MainActivity extends AppCompatActivity {
 
         //速度显示
 
+
         //录音录像功能实现
+        button_record = (Button)findViewById(R.id.button_record);
+        button_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Record.class);
+                startActivity(intent);
+            }
+        });
+
 
         //紧急拨号
         final int[] time = {0};
-        Button button_time = (Button)findViewById(R.id.button_time);
+
+        button_time = (Button)findViewById(R.id.button_time);
         button_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

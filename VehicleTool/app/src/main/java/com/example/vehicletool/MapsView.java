@@ -42,10 +42,12 @@ public class MapsView extends MainActivity {
     private Context mContext;
     private float mRotateDegree = 0;
 
+    private String Message;
 
     public double latitude = 0;
     public double longitude = 0;
     public float radius = 0;
+    private float speed = 0;
     public String province = null;
 
     //获取陀螺仪传感器的实例
@@ -55,21 +57,18 @@ public class MapsView extends MainActivity {
         @Override
         public  void onReceiveLocation(BDLocation location) {
             if(location == null || mMapView == null){
-                //Toast.makeText(MainActivity.this,"定位失败，请重试",Toast.LENGTH_SHORT);
+                Toast.makeText(MapsView.this,"定位失败，请重试",Toast.LENGTH_SHORT).show();
                 Log.d("ERROR","获取定位数据失败");
                 return;
             }
 
-            Log.d("SUCCESS","获取定位数据成功");
-            Log.d("Latitude", String.valueOf(latitude));
-            Log.d("Longitude", String.valueOf(longitude));
-            Log.d("Province", String.valueOf(province));
+
+
 
 
             //第一次定位时进行地图放大
             if(isFirstLocation){
                 isFirstLocation = false;
-
                 LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
                 update = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(update);
@@ -81,10 +80,24 @@ public class MapsView extends MainActivity {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
             radius = location.getRadius();
+            speed = location.getSpeed();
             province = location.getProvince();
 
-            //MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius()).direction(location.getDirection()).latitude(location.getLatitude()).longitude(location.getLongitude()).build();
-            MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius()).direction(mRotateDegree).latitude(location.getLatitude()).longitude(location.getLongitude()).build();
+            Log.d("SUCCESS","获取定位数据成功");
+            Log.d("Latitude", String.valueOf(latitude));
+            Log.d("Longitude", String.valueOf(longitude));
+            Log.d("Province", String.valueOf(province));
+            Log.d("Speed", String.valueOf(speed));
+
+            //1.固定图标指针方向
+            //MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius())
+            // .direction(location.getDirection()).latitude(location.getLatitude())
+            // .longitude(location.getLongitude()).build();
+
+            //2.配置图标指针方向依赖陀螺仪旋转
+            MyLocationData locData = new MyLocationData.Builder().accuracy(location.getRadius())
+                    .direction(mRotateDegree).latitude(location.getLatitude())
+                    .longitude(location.getLongitude()).build();
 
             mBaiduMap.setMyLocationData(locData);
         }
@@ -131,6 +144,8 @@ public class MapsView extends MainActivity {
 
         //开启地图定位图层
         mLocationClient.start();
+        Message = "当前经纬度：" + String.format("%.2f",latitude) + "," + String.format("%.2f",longitude);
+        Toast.makeText(MapsView.this,Message,Toast.LENGTH_LONG).show();
 
 
         //查看日志
@@ -138,6 +153,7 @@ public class MapsView extends MainActivity {
 
         //传感器服务
         sensorManager = (SensorManager)getSystemService(Context. SENSOR_SERVICE);
+        assert sensorManager != null;
         Sensor accesensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magsensor = sensorManager.getDefaultSensor((Sensor.TYPE_MAGNETIC_FIELD));
 
