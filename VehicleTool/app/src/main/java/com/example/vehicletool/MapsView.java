@@ -12,7 +12,9 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -63,9 +65,6 @@ public class MapsView extends MainActivity {
             }
 
 
-
-
-
             //第一次定位时进行地图放大
             if(isFirstLocation){
                 isFirstLocation = false;
@@ -114,6 +113,11 @@ public class MapsView extends MainActivity {
         setContentView(R.layout.maps_layout);
         mMapView = (MapView)findViewById(R.id.bmapView);
 
+        //隐藏百度logo
+        View Child = mMapView.getChildAt(1);
+        if(Child != null && (Child instanceof ImageView || Child instanceof ZoomControls)){
+            Child.setVisibility(View.INVISIBLE);
+        }
 
         //叠加实时路况图层
         mBaiduMap = mMapView.getMap();
