@@ -8,62 +8,76 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/button_camera"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="235dp"
+        android:layout_marginBottom="177dp"
         android:background="@drawable/rad_selector"
+        android:text="Camera"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <Button
         android:id="@+id/button_map"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="110dp"
         android:layout_marginEnd="44dp"
         android:layout_marginBottom="120dp"
         android:layout_toStartOf="@+id/view_speed"
+        android:background="@drawable/rad_selector"
         android:text="Maps\n[able]"
         android:textAlignment="center"
         android:textSize="30sp" />
 
     <TextView
-        android:background="@drawable/rad_selector"
         android:id="@+id/view_speed"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="68dp"
         android:layout_marginBottom="120dp"
+        android:background="@drawable/rad_selector"
         android:text="speed\n[unable]"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="26sp" />
 
     <Button
-        android:background="@drawable/rad_selector"
-        android:id="@+id/button_record"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="180dp"
-        android:layout_toStartOf="@+id/button_time"
-        android:text="Record\n[able]"
-        android:textAlignment="center"
-        android:textSize="22sp" />
-
-    <Button
-        android:background="@drawable/rad_selector"
         android:id="@+id/button_time"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="180dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="339dp"
+        android:background="@drawable/rad_selector"
         android:text="Emergency\nCall\n[able]"
         android:textAlignment="center"
         android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/button_record"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="339dp"
+        android:layout_toStartOf="@+id/button_time"
+        android:background="@drawable/rad_selector"
+        android:text="Record\n[able]"
+        android:textAlignment="center"
+        android:textSize="22sp" />
+
 
 </RelativeLayout>

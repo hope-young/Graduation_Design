@@ -35,6 +35,7 @@ import com.baidu.mapapi.model.LatLng;
 
 
 public class MapsView extends MainActivity {
+    private static Toast messagetoast;
     MapView mMapView = null;
     private BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
@@ -51,6 +52,8 @@ public class MapsView extends MainActivity {
     public float radius = 0;
     private float speed = 0;
     public String province = null;
+    public String addr = null;
+
 
     //获取陀螺仪传感器的实例
     private SensorManager sensorManager;
@@ -71,9 +74,8 @@ public class MapsView extends MainActivity {
                 LatLng ll = new LatLng(location.getLatitude(),location.getLongitude());
                 update = MapStatusUpdateFactory.newLatLng(ll);
                 mBaiduMap.animateMapStatus(update);
-                update = MapStatusUpdateFactory.zoomTo(16f);
+                update = MapStatusUpdateFactory.zoomTo(18f);
                 mBaiduMap.animateMapStatus(update);
-
             }
             //获取经纬度以及省份信息
             latitude = location.getLatitude();
@@ -81,6 +83,11 @@ public class MapsView extends MainActivity {
             radius = location.getRadius();
             speed = location.getSpeed();
             province = location.getProvince();
+            addr = location.getAddrStr();
+
+            Message = "当前经纬度：" + String.format("%.2f",latitude) + "," + String.format("%.2f",longitude) + ",你位于" + addr + "^ _ ^";
+            messagetoast = Toast.makeText(MapsView.this,Message,Toast.LENGTH_SHORT);
+            messagetoast.show();
 
             Log.d("SUCCESS","获取定位数据成功");
             Log.d("Latitude", String.valueOf(latitude));
@@ -119,14 +126,20 @@ public class MapsView extends MainActivity {
             Child.setVisibility(View.INVISIBLE);
         }
 
+        //传感器服务
+        sensorManager = (SensorManager)getSystemService(Context. SENSOR_SERVICE);
+        assert sensorManager != null;
+        Sensor accesensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor magsensor = sensorManager.getDefaultSensor((Sensor.TYPE_MAGNETIC_FIELD));
+
+        //注册监听器
+        sensorManager.registerListener(listener,accesensor,SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(listener,magsensor,SensorManager.SENSOR_DELAY_GAME);
+
         //叠加实时路况图层
         mBaiduMap = mMapView.getMap();
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setTrafficEnabled(true);
-
-
-        //开启定位图层
-        mBaiduMap.setMyLocationEnabled(true);
 
         //定位图标的配置[跟随]
         mBaiduMap.setMyLocationConfiguration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING,true, BitmapDescriptorFactory.fromBitmap(null)));
@@ -138,7 +151,9 @@ public class MapsView extends MainActivity {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);
         option.setCoorType("bd09ll");
-        option.setScanSpan(1000);
+        option.setScanSpan(500);
+        option.setIsNeedAddress(true);
+        option.setAddrType("all");
 
         mLocationClient.setLocOption(option);
 
@@ -146,25 +161,24 @@ public class MapsView extends MainActivity {
         myLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(myLocationListener);
 
-        //开启地图定位图层
-        mLocationClient.start();
-        Message = "当前经纬度：" + String.format("%.2f",latitude) + "," + String.format("%.2f",longitude);
-        Toast.makeText(MapsView.this,Message,Toast.LENGTH_LONG).show();
-
 
         //查看日志
         Log.d("Locating","开启定位成功");
 
-        //传感器服务
-        sensorManager = (SensorManager)getSystemService(Context. SENSOR_SERVICE);
-        assert sensorManager != null;
-        Sensor accesensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        Sensor magsensor = sensorManager.getDefaultSensor((Sensor.TYPE_MAGNETIC_FIELD));
+        //开启地图定位图层
+        mLocationClient.start();
 
-        //注册监听器
-        sensorManager.registerListener(listener,accesensor,SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(listener,magsensor,SensorManager.SENSOR_DELAY_GAME);
+        //开启定位图层
+        mBaiduMap.setMyLocationEnabled(true);
 
+
+    }
+
+    //没有效果 不知道为啥
+    public static void cancelToast(){
+        if(messagetoast != null){
+            messagetoast.cancel();
+        }
     }
 
     private SensorEventListener listener = new SensorEventListener() {
@@ -205,6 +219,7 @@ public class MapsView extends MainActivity {
     protected void onPause(){
         super.onPause();
         mMapView.onPause();
+        MapsView.cancelToast();
     }
 
     @Override
@@ -214,7 +229,7 @@ public class MapsView extends MainActivity {
         if(sensorManager != null){
             sensorManager.unregisterListener(listener);
         }
-
+        cancelToast();
         mLocationClient.stop();
         mBaiduMap.setMyLocationEnabled(false);
         super.onDestroy();
