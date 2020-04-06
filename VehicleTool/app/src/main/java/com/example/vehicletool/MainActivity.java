@@ -6,14 +6,25 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.tencent.cos.xml.CosXmlService;
+import com.tencent.cos.xml.CosXmlServiceConfig;
+import com.tencent.cos.xml.transfer.COSXMLUploadTask;
+import com.tencent.cos.xml.transfer.TransferConfig;
+import com.tencent.cos.xml.transfer.TransferManager;
+import com.tencent.qcloud.core.auth.QCloudCredentialProvider;
+import com.tencent.qcloud.core.auth.ShortTimeCredentialProvider;
+
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +34,46 @@ public class MainActivity extends AppCompatActivity {
     private Button button_map;
     private Button button_time;
     private Button button_camera;
+    public String region = "ap-chengdu";
+    private Context context;
+
+    //数据上传至COS对象存储桶（永久密钥）
+    public void send_message(String Message,String cosPath){
+
+        context = getApplicationContext();
+
+        // 创建 CosXmlServiceConfig 对象，根据需要修改默认的配置参数
+        CosXmlServiceConfig serviceConfig = new CosXmlServiceConfig.Builder()
+                .setRegion(region)
+                .isHttps(true) // 使用 HTTPS 请求, 默认为 HTTP 请求
+                .builder();
+
+        String secretId = "AKIDCE4UcUVccMqwlInCRP8aw1Ugc5jZj9aH"; //永久密钥 secretId
+        String secretKey = "cUYQP9AHz5u3T9lA3cyV2KabXEfpsqWw"; //永久密钥 secretKey
+
+        QCloudCredentialProvider credentialProvider = new ShortTimeCredentialProvider(secretId, secretKey, 300);
+
+        CosXmlService cosXmlService = new CosXmlService(context, serviceConfig, credentialProvider);
+
+        // 初始化 TransferConfig
+        TransferConfig transferConfig = new TransferConfig.Builder().build();
+
+        // 初始化 TransferManager
+        TransferManager transferManager = new TransferManager(cosXmlService, transferConfig);
+
+        String bucket = "car-message-1301782340"; //存储桶，格式：BucketName-APPID
+        //String srcPath = new File(context.getExternalCacheDir(), "exampleobject").toString(); //本地文件的绝对路径
+
+        //String uploadId = null; //若存在初始化分块上传的 UploadId，则赋值对应的 uploadId 值用于续传；否则，赋值 null
+        // 上传对象
+        //COSXMLUploadTask cosxmlUploadTask = transferManager.upload(bucket, cosPath, srcPath, uploadId);
+        byte[] bytes = Message.getBytes(Charset.forName("UTF-8"));
+        COSXMLUploadTask cosxmlUploadTask= transferManager.upload(bucket, cosPath, bytes);
+
+        Log.d("SEND______:","Success!");
+    }
+
+
 
     //动态申请权限
     private void request_permissions(){
@@ -48,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.CAMERA);
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.INTERNET);
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
+                != PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.ACCESS_WIFI_STATE);
         }
 
         //列表为空，权限已经全部获取了

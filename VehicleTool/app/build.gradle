@@ -29,6 +29,19 @@ android {
     }
 
 }
+/*
+//配置简化版COS_SDK的maven仓库
+allprojects {
+    repositories{
+        maven{
+            url "https://dl.bintray.com/tencentqcloudterminal/maven"
+        }
+        google()
+        jcenter()
+    }
+}
+
+ */
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -38,4 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation files('libs/BaiduLBS_Android.jar')
+
+    //配置COS的SDK依赖
+    implementation 'com.tencent.qcloud:cosxml:5.4.31'
 }

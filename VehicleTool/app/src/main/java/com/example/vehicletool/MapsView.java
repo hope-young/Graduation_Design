@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +33,15 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.tencent.cos.xml.CosXmlServiceConfig;
+import com.tencent.cos.xml.transfer.TransferConfig;
+import com.tencent.qcloud.core.auth.QCloudCredentialProvider;
+import com.tencent.qcloud.core.auth.ShortTimeCredentialProvider;
+
+import java.sql.Time;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MapsView extends MainActivity {
@@ -45,7 +55,7 @@ public class MapsView extends MainActivity {
     private Context mContext;
     private float mRotateDegree = 0;
 
-    private String Message;
+    private String Message = null;
 
     public double latitude = 0;
     public double longitude = 0;
@@ -53,6 +63,10 @@ public class MapsView extends MainActivity {
     private float speed = 0;
     public String province = null;
     public String addr = null;
+    public String sed_msg = null;
+    public String cosPath;
+    public Date currentTime;
+    public SimpleDateFormat formatter;
 
 
     //获取陀螺仪传感器的实例
@@ -88,6 +102,14 @@ public class MapsView extends MainActivity {
             Message = "当前经纬度：" + String.format("%.2f",latitude) + "," + String.format("%.2f",longitude) + ",你位于" + addr + "^ _ ^";
             messagetoast = Toast.makeText(MapsView.this,Message,Toast.LENGTH_SHORT);
             messagetoast.show();
+
+            sed_msg = latitude +"   |    " + longitude +"   |    " + province;
+
+            currentTime = new Date();
+            formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+            cosPath = formatter.format(currentTime);
+
+            send_message(sed_msg,cosPath);
 
             Log.d("SUCCESS","获取定位数据成功");
             Log.d("Latitude", String.valueOf(latitude));
@@ -151,7 +173,7 @@ public class MapsView extends MainActivity {
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);
         option.setCoorType("bd09ll");
-        option.setScanSpan(500);
+        option.setScanSpan(10000);
         option.setIsNeedAddress(true);
         option.setAddrType("all");
 
@@ -170,6 +192,9 @@ public class MapsView extends MainActivity {
 
         //开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
+
+
+
 
 
     }
