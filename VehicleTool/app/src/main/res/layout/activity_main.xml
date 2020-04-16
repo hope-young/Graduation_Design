@@ -79,7 +79,7 @@
         android:layout_height="100dp"
         android:layout_margin="20dp"
         android:layout_below="@+id/button_map"
-        android:layout_toLeftOf="@id/view_speed"
+        android:layout_toLeftOf="@id/button_navi"
         android:layout_centerVertical="true"
         android:background="@drawable/rad_selector"
         android:text="紧急报警"
@@ -88,7 +88,7 @@
 
 
     <Button
-        android:id="@+id/view_speed"
+        android:id="@+id/button_navi"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@id/button_record"
@@ -107,7 +107,7 @@
         android:layout_height="100dp"
         android:layout_margin="20dp"
         android:layout_below="@id/button_camera"
-        android:layout_toRightOf="@id/view_speed"
+        android:layout_toRightOf="@id/button_navi"
         android:layout_centerVertical="true"
         android:background="@drawable/rad_selector"
         android:text="敬请期待"

@@ -1,5 +1,6 @@
 package com.example.vehicletool;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 //import android.graphics.Camera;
 //import android.hardware.camera2.*;
@@ -7,6 +8,7 @@ import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -29,6 +31,7 @@ public class mMediaRecorder extends MainActivity {
     private SurfaceView mSurfaceview;
     private Button button_startstop;
     private boolean startFLAG = false;
+    private boolean backFLAG = false;
     private MediaRecorder mediaRecorder;
     private SurfaceHolder mSurfaceHolder;
     private Camera camera;
@@ -118,7 +121,9 @@ public class mMediaRecorder extends MainActivity {
         //mediaRecorder.setOrientationHint(90);
 
         //预览
+        //mediaRecorder.prepare();
         mediaRecorder.setPreviewDisplay(mSurfaceview.getHolder().getSurface());
+        //camera.startPreview();
 
         //开始录制的监听
         button_startstop.setOnClickListener(new View.OnClickListener() {
@@ -126,35 +131,41 @@ public class mMediaRecorder extends MainActivity {
             public void onClick(View view) {
                 //判断拍摄状态
                 if(!startFLAG){
-                    try {
-                        //创建视频文件
-                        videoFile = new File(getExternalCacheDir() + "/video.mp4");
+                    if(!backFLAG) {
+                        try {
+                            //创建视频文件
+                            videoFile = new File(getExternalCacheDir() + "/video.mp4");
 
-                        mediaRecorder.setOutputFile(videoFile.getAbsoluteFile());
+                            mediaRecorder.setOutputFile(videoFile.getAbsoluteFile());
+                            mediaRecorder.setPreviewDisplay(mSurfaceview.getHolder().getSurface());
 
+                            mediaRecorder.prepare();
+                            //开始录制
+                            mediaRecorder.start();
+                            timeStart();
+                            Toast.makeText(mMediaRecorder.this, "开始录制", Toast.LENGTH_SHORT).show();
+                            Log.d("VideoRecord", "开始录制");
+                            startFLAG = true;
+                            button_startstop.setText("stop");
 
-                        mediaRecorder.prepare();
-                        //开始录制
-                        mediaRecorder.start();
-                        timeStart();
-                        Toast.makeText(mMediaRecorder.this,"开始录制",Toast.LENGTH_SHORT).show();
-                        Log.d("VideoRecord","开始录制");
-                        startFLAG = true;
-                        button_startstop.setText("stop");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        finish();
 
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
                     }
                 }else {
                     //停止录制
                     mediaRecorder.stop();
                     timeStop();
                     mediaRecorder.release();
-                    mediaRecorder = null;
-                    Toast.makeText(mMediaRecorder.this,"停止录制",Toast.LENGTH_SHORT).show();
+
+                    //mediaRecorder = null;
+                    Toast.makeText(mMediaRecorder.this,"停止录制,视频信息已保存！",Toast.LENGTH_SHORT).show();
                     Log.d("VideoRecord","停止录制");
-                    button_startstop.setText("start");
+                    button_startstop.setText("back");
+                    backFLAG = true;
                 }
             }
         });
@@ -175,6 +186,8 @@ public class mMediaRecorder extends MainActivity {
     @Override
     protected void onDestroy()
     {
+        camera.release();
+        camera = null;
         super.onDestroy();
     }
 

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button button_map;
     private Button button_time;
     private Button button_camera;
+    private Button button_navi;
     public String region = "ap-chengdu";
     private Context context;
     private HorizonView horizonView;
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 .isHttps(true) // 使用 HTTPS 请求, 默认为 HTTP 请求
                 .builder();
 
-        String secretId = "AKIDCE4UcUVccMqwlInCRP8aw1Ugc5jZj9aH"; //永久密钥 secretId
-        String secretKey = "cUYQP9AHz5u3T9lA3cyV2KabXEfpsqWw"; //永久密钥 secretKey
+        String secretId = "就不告诉你"; //永久密钥 secretId
+        String secretKey = "就不告诉你"; //永久密钥 secretKey
 
         QCloudCredentialProvider credentialProvider = new ShortTimeCredentialProvider(secretId, secretKey, 300);
 
@@ -245,6 +246,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"正在启动录像",Toast.LENGTH_SHORT).show();
                 Intent intentmediarecorder = new Intent(MainActivity.this,mMediaRecorder.class);
                 startActivity(intentmediarecorder);
+            }
+        });
+
+        button_navi = (Button)findViewById(R.id.button_navi);
+        button_navi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"目前正在开发中^ ^",Toast.LENGTH_SHORT).show();
             }
         });
 
