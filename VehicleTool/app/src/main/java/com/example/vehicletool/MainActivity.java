@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 .isHttps(true) // 使用 HTTPS 请求, 默认为 HTTP 请求
                 .builder();
 
-        String secretId = "AKIDCE4UcUVccMqwlInCRP8aw1Ugc5jZj9aH"; //永久密钥 secretId
-        String secretKey = "cUYQP9AHz5u3T9lA3cyV2KabXEfpsqWw"; //永久密钥 secretKey
+        String secretId = "不给你"; //永久密钥 secretId
+        String secretKey = "不给你"; //永久密钥 secretKey
 
         QCloudCredentialProvider credentialProvider = new ShortTimeCredentialProvider(secretId, secretKey, 300);
 
