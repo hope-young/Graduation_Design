@@ -9,13 +9,21 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.heweather.plugin.view.HeContent;
+import com.heweather.plugin.view.HeWeatherConfig;
+import com.heweather.plugin.view.HorizonView;
 import com.tencent.cos.xml.CosXmlService;
 import com.tencent.cos.xml.CosXmlServiceConfig;
 import com.tencent.cos.xml.transfer.COSXMLUploadTask;
@@ -28,6 +36,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.vehicletool.R.integer.Icon_Size;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button button_record;
@@ -36,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private Button button_camera;
     public String region = "ap-chengdu";
     private Context context;
+    private HorizonView horizonView;
+
 
     //数据上传至COS对象存储桶（永久密钥）
     public void send_message(String Message,String cosPath){
@@ -73,6 +85,47 @@ public class MainActivity extends AppCompatActivity {
         Log.d("SEND______:","Success!");
     }
 
+
+    //和风天气插件配置
+    private void Weather_View(){
+        //调用和风天气的sdk显示天气插件
+        horizonView = findViewById(R.id.weather_view);
+        //horizonView.setDefaultBack(false);
+        //horizonView.setStroke(5, Color.BLUE,1,Color.BLUE);
+        //温度
+        horizonView.addTemp(50,Color.WHITE);
+        //天气图标
+        horizonView.addWeatherIcon(50);
+        horizonView.addLocation(25,Color.WHITE);
+        //预警图标
+        //horizonView.addAlarmIcon(R.integer.Icon_Size);
+        //预警描述
+        //horizonView.addAlarmTxt(R.integer.Icon_Size);
+
+        //天气描述
+        horizonView.addCond(25,Color.WHITE);
+
+        //风力图标
+        horizonView.addWindIcon(40);
+        //风力
+        horizonView.addWind(20,Color.WHITE);
+        //空气质量描述
+        //horizonView.addAqiText(Icon_Size,Color.WHITE);
+        //空气质量
+        //horizonView.addAqiQlty(Icon_Size);
+        //空气指数
+        //horizonView.addAqiNum(Icon_Size);
+        //降雨图标
+        //horizonView.addRainIcon(Icon_Size);
+        //降雨详情
+        //horizonView.addRainDetail(Icon_Size, Color.WHITE);
+        //控件居中方式
+        horizonView.setViewGravity(HeContent.GRAVITY_CENTER);
+
+        //horizonView.setViewPadding(5,5,5,0);
+
+        horizonView.show();
+    }
 
 
     //动态申请权限
@@ -112,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED){
             permissionList.add(Manifest.permission.ACCESS_WIFI_STATE);
         }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
 
         //列表为空，权限已经全部获取了
         if(!permissionList.isEmpty()){
@@ -129,6 +186,12 @@ public class MainActivity extends AppCompatActivity {
 
         //请求权限
         request_permissions();
+
+        //天气插件初始化
+        HeWeatherConfig.init("4fa560955f4247a7a479d09583569be9");
+
+        Weather_View();
+
         //导入百度地图（调用Maps_Layout）
         button_map = (Button)findViewById(R.id.button_map);
 

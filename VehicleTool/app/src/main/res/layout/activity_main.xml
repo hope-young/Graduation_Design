@@ -4,80 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e7e9fd"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_camera"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="235dp"
-        android:layout_marginBottom="177dp"
-        android:background="@drawable/rad_selector"
-        android:text="Camera"
+    <TextView
+        android:id="@+id/hello_text"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="bottom"
+        android:text="欢迎使用！"
+        android:paddingBottom="10dp"
         android:textAlignment="center"
-        android:textSize="16sp" />
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#ffffff"
+        tools:ignore="RtlCompat" />
+
+    <com.heweather.plugin.view.HorizonView
+        android:id="@+id/weather_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/hello_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp" />
+
 
     <Button
         android:id="@+id/button_map"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="120dp"
-        android:layout_toStartOf="@+id/view_speed"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/weather_view"
+        android:layout_toLeftOf="@id/button_record"
         android:background="@drawable/rad_selector"
-        android:text="Maps\n[able]"
+        android:text="地图"
         android:textAlignment="center"
-        android:textSize="30sp" />
-
-    <TextView
-        android:id="@+id/view_speed"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="110dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="120dp"
-        android:background="@drawable/rad_selector"
-        android:text="speed\n[unable]"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="26sp" />
-
-    <Button
-        android:id="@+id/button_time"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="65dp"
-        android:layout_marginBottom="339dp"
-        android:background="@drawable/rad_selector"
-        android:text="Emergency\nCall\n[able]"
-        android:textAlignment="center"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button_record"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="54dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="339dp"
-        android:layout_toStartOf="@+id/button_time"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/weather_view"
         android:background="@drawable/rad_selector"
-        android:text="Record\n[able]"
+        android:text="录音"
         android:textAlignment="center"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/weather_view"
+        android:layout_toRightOf="@id/button_record"
+        android:layout_centerVertical="true"
+        android:background="@drawable/rad_selector"
+        android:text="录像"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_time"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/button_map"
+        android:layout_toLeftOf="@id/view_speed"
+        android:layout_centerVertical="true"
+        android:background="@drawable/rad_selector"
+        android:text="紧急报警"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+
+    <Button
+        android:id="@+id/view_speed"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_below="@id/button_record"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rad_selector"
+        android:text="导航"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+
+
+    <Button
+        android:id="@+id/button_etc"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:layout_below="@id/button_camera"
+        android:layout_toRightOf="@id/view_speed"
+        android:layout_centerVertical="true"
+        android:background="@drawable/rad_selector"
+        android:text="敬请期待"
+        android:textAlignment="center"
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

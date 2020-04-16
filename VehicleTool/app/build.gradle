@@ -45,13 +45,18 @@ allprojects {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //配置百度地图依赖
     implementation files('libs/BaiduLBS_Android.jar')
-
     //配置COS的SDK依赖
     implementation 'com.tencent.qcloud:cosxml:5.4.31'
+    //配置和风天气依赖
+    implementation files('libs/HeWeather_Plugin_SDK_Android_V1.4.jar')
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+
 }
